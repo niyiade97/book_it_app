@@ -1,0 +1,42 @@
+<%- include("partials/header") %>
+<section class="event-body">
+<div class="appointment-booking" >
+    <div class="calendar-header">
+        <div class="monthsAndYear">
+            <p class="cal-months"></p>
+            <p class="cal-year"></p>
+        </div>
+        <div class="navIcons">
+            <i class="navLeft fa fa-chevron-left"></i>
+            <i class="navRight fa fa-chevron-right"></i>
+        </div>
+    </div>
+    <table class="calendar-table">
+    </table>
+</div>
+<div class="time-details">
+    <form action="/bookAppointment" method="post">
+    <div class="months-Year">
+        <p class="date"></p>
+        <p class="day"></p>
+        <p class="month"></p>
+        <p class="year"></p>
+        <input type="hidden">
+        <input type="hidden">
+        <input type="hidden">
+        <input type="hidden">
+    </div>
+    <div class="title">
+        <p class="errorMessage"><%= errorMessage %></p>
+        <input type="text"placeholder="Add Title" name="title" ><br>
+    </div>
+    <div class="timeAndSubmit">
+        <input type="time" name="timeFrom">
+        <p>to</p>
+        <input type="time" name="timeTo"><br>
+        <input type="submit" class="submitBtn" value="Save">
+    </div>
+    </form>
+</div>
+</section>
+<%- include("partials/footer") %>

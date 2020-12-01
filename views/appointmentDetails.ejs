@@ -1,0 +1,42 @@
+<%- include("partials/header") %>
+<section class="event-body">
+<div class="booking-details" >
+    <div class="details-container">
+        <div>
+            <h1>Appointment with</h1>
+            <p class="details-header-name">Ade</p>
+            <hr>
+        </div>
+        <div>
+            <h3><%= title %></h3>
+        </div>
+        <div>
+            <i class="booking-details-icon  fa fa-calendar"></i>
+            <p class="booking-details-text"><%= month %> <%= day %></p>
+        </div>
+        <div>
+            <i class="booking-details-icon fa fa-clock"></i>
+            <p class="booking-details-text"><%= timefrom %></p>
+        </div>
+        <div>
+            <i class="booking-details-icon fa fa-clock"></i>
+            <p class="booking-details-text"><%= timeto %></p>
+        </div>
+        <div>
+            <i class="booking-details-icon fa fa-hourglass-half"></i>
+            <p class="booking-details-text">1 hour</p>
+        </div>
+        <div>
+            <i class="booking-details-icon  fa fa-map-marker"></i>
+            <p class="booking-details-text">Zoom</p>
+        </div>
+        <div>
+            <i class="booking-details-icon  fa fa-phone"></i>
+            <p class="booking-details-text"> +234 802 731 8919</p>
+        </div>
+        <a href="#book"><input type="button" value="RESHEDULE" class="reshedule_btn"></a>
+        
+    </div>
+</div>
+</section>
+<%- include("partials/footer") %>

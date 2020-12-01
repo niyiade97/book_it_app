@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BOOKIT</title>
+        <link rel="icon" href="favicon.ico">  
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="stylesheet.css" type="text/css"> 
+        <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@1,700&display=swap" rel="stylesheet">
+        <script src='https://kit.fontawesome.com/7638b55f18.js' crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <section class="main-container">
+            <div class="login-container">
+                <div class="login-header">
+                    <i class="far fa-calendar-alt"></i>
+                    <p>BOOKIT</p>
+                </div>
+                
+                <div class="login-inner-container">
+                    <div class="login-h1-text">
+                        <h1>Welcome Back!</h1>
+                    </div>
+                    <div class="login-p-text">
+                        <p>To stay connected with us please login with your personal info</p>
+                    </div>
+                    <a href="/login">
+                        <input class="login-btn" type="submit" value="LOG IN">
+                    </a>
+                    
+                </div>
+               
+            </div>
+            <div class="register-container">
+                <div class="register-header">
+                    <div class="register-h1-text">
+                        <h1>Create Account</h1>
+                    </div>
+                    <div class="social-media-icon">
+                        <i class="media-icon fa fa-facebook"></i>
+                        <i class="media-icon fa fa-google"></i>
+                        <i class="media-icon fa fa-twitter"></i>
+                    </div>
+                    <div class="register-p-text">
+                        <p>or use your email for registration</p>
+                    </div>
+                    <form action="/register" method="post">
+                        <p class="error-message"><%= errorMessage %></p>
+                    <div class="input-container">
+                        <div class="inner-input-container">
+                            <i class="fa fa-user icon"> 
+                            </i> 
+                            <input type="text" placeholder="First Name" name="Fname" required>
+                        </div>
+                        <div class="inner-input-container">
+                            <i class="fa fa-user icon"> 
+                            </i> 
+                            <input type="text" placeholder="Last Name" name="Lname" required>
+                        </div>
+                        <div class="inner-input-container">
+                            <i class="fa fa-envelope icon"> 
+                            </i> 
+                            <input type="text" placeholder="Email" name="email" required>
+                        </div>
+                        <div class="inner-input-container">
+                            <i class="fa fa-lock icon"> 
+                            </i> 
+                            <input type="text" placeholder="Password" name="password" required>
+                        </div>
+                    </div>
+                    <input type="submit" class="register-btn" value="SIGN UP">
+                    </form>
+                   
+
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
