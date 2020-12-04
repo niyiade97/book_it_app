@@ -364,6 +364,10 @@ border-top: 1px solid #16213e;
 }
 .bottom-nav-container{
     width:100%;
+   
+}
+.bottom-nav-container a{
+    color:#16213e;
 }
 
 .bottom-nav-text{
@@ -518,6 +522,9 @@ text-align: center;
     color:red;
     padding:10px;
 }
+.register-and-forgotPassword-container{
+    display: none;
+}
 /* resize screen */
 
 @media screen and (max-width: 457px) {
@@ -602,6 +609,21 @@ text-align: center;
 }
 .login-wrapper{
     display:none;
+}
+.register-and-forgotPassword-container{
+    display: block;
+    margin-top: 15px;
+    font-size: 13px;
+    text-align: center;
+    
+}
+.register-link,.forgot-password-link{
+    margin-right: 10px;
+   
+}
+.forgot-password-link{
+    margin-left: 5px;
+   
 }
   }
 

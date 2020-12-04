@@ -10,6 +10,7 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const bcrypt = require("bcrypt");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const findOrCreate = require("mongoose-findorcreate");
 // var encrypt = require("mongoose-encryption");
 
 app.set("view engine" , "ejs");
@@ -29,44 +30,64 @@ const userSchema = new mongoose.Schema({
     firstName : String,
     lastName : String,
     email : String,
-});
-
-const loginSchema = new mongoose.Schema({
-    username : String,
+    username: String,
     passWord : String
 });
 
+
+
 userSchema.plugin(passportLocalMongoose);
-loginSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
+
 
 const User = mongoose.model("User" , userSchema); 
-const LoginDetails = mongoose.model("LoginDetails" , loginSchema); 
 
-passport.use(LoginDetails.createStrategy());
-passport.serializeUser(LoginDetails.serializeUser());
-passport.deserializeUser(LoginDetails.deserializeUser());
+passport.use(User.createStrategy());
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
-// passport.use(new GoogleStrategy({
-//     clientID: process.env.CLIENT_ID,
-//     clientSecret: process.env.CLIENT_SECRET,
-//     callbackURL: "http://www.example.com/auth/google/callback"
-//   },
-//   function(accessToken, refreshToken, profile, cb) {
-//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//       return cb(err, user);
-//     });
-//   }
-// ));
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
 
-const saltRounds = 10;
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "http://localhost:5000/auth/google/BOOKIT",
+    userProfileURL : "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+      console.log(profile)
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
 
 app.get("/", function(req, res){
     res.render("register", {errorMessage : ""});
 })
 
+app.get("/auth/google" , function(req , res){
+  console.log("done")
+    passport.authenticate("google" , { scope : ["email" ,"profile"]});
+})
+
+app.get("/auth/google/BOOKIT", 
+  passport.authenticate('google', { failureRedirect: '/login'  }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/dashboard');
+  });
 app.get("/dashboard", function(req, res){
     if(req.isAuthenticated()){
-        res.render("dashboard");
+        res.render("dashboard" , { username : req.user.username});
     }
     else{
         res.redirect("/login");
@@ -98,78 +119,87 @@ app.post("/login", function(req,res){
     const email = req.body.email;
     const password = req.body.password;
    
-    LoginDetails.findOne({email : email} , function(err , user){
+    User.findOne({email : email} , function(err , user){
         if(err){
             console.log(err)
         }
         else{
             if(!user){
-                res.render("login" ,{errorMessage : "User doesn't exists!!!"})
+                res.render("login" , {errorMessage: "User does not exist"});
             }
             else{
-                const userDetails = new LoginDetails({
-                    username : email,
-                    passWord : password
-                }); 
-                req.login(userDetails, function(err){
+                bcrypt.compare(password , user.passWord , function(err , result){
                     if(err){
-                      console.log(err);
-                      
-                    } 
-                    else {
-                        res.redirect("/dashboard");
-                      
+                      console.log(err)
                     }
-                  });
+                    else{
+                      if(!result){
+                        res.render("login" , {errorMessage: "wrong password"})
+                      }
+                      else{
+                        req.login(user, function(err){
+                          if(err){
+                            console.log(err)
+                          }
+                          else{
+                            res.redirect("/dashboard");
+                          }
+                        })
+                        // passport.authenticate("local")(req, res, function(){
+                          
+                          
+                        // });
+                      }
+                    }
+                  })
             }
         }
     })
+   
    
 })
 app.post("/register", function(req,res){
     const fName = req.body.Fname;
     const lName = req.body.Lname;
     const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
 
-    User.findOne({email : email}, function(err, foundUser){
+    User.findOne({usenamr : username}, function(err, foundUser){
         if(err){
             console.log(err);
-            console.log("error");
         }
         else{
             if(foundUser){
-                res.render("register" , {errorMessage : "Email has been used"});
+                res.render("register" , {errorMessage : "User Exists"});
             }
             else{
-                    const user = new User({
-                        firstName : fName,
-                        lastName : lName,
-                        email : email,
-                    });
-                    user.save(function(err){
-                        if(err){
-                            console.log("error")
-                            console.log(err);
-                        }
-                        else{
-                            console.log("success")
+                bcrypt.hash(password ,10 , function(err, hash){
+                    if(err){
+                        console.log(err)
+                    }
+                    else{
+                        if(hash){
+                            const user = new User({
+                                firstName : fName,
+                                lastName : lName,
+                                email : email,
+                                username : username,
+                                passWord : hash
+                            });
+                            user.save(function(err){
+                                if(err){
+                                    console.log(err)
+                                }
+                                else{
+                                    res.redirect("/login");
+                                }
+                            })
                             
                         }
-                    });
-                    LoginDetails.register({username : email},password, function(err , user){
-                        if (err) {
-                            console.log(err);
-                            res.redirect("/");
-                          } 
-                          else {
-                              res.redirect("/login");
-                            
-                          }
-                    })
-                }
-                // Now we can store the password hash in db.
-            
+                    }
+                })
+            } 
         }
     });
 })
@@ -214,6 +244,11 @@ else{
 
 
 });
-app.listen(5000 ,function(){
+let port = process.env.PORT;
+if(port == null || port == ""){
+    port = 5000;
+}
+
+app.listen(port ,function(){
     console.log("Server started on port 5000");
 });
