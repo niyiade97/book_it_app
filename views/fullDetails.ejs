@@ -1,0 +1,47 @@
+<%- include("partials/header") %>
+
+<section class="event-body">
+    
+  
+       
+           
+            <%  for(var i=0; i<user.length; i++) {  %>
+                 <%   if(user[i]._id == id){  %>
+        <div class="booking-details" >
+            <div class="details-container">
+                <h1>Appointments</h1>
+                <hr>
+            </div>
+                   
+            <div>
+                <i class="booking-details-icon  fa fa-calendar"></i>
+                <p class="booking-details-text"><%= user[i].month + " " + user[i].date %></p>
+            </div>
+            <div>
+                <i class="booking-details-icon fa fa-clock"></i>
+                <p class="booking-details-text"><%= user[i].timeFromHour + " : " + user[i].timeFromMin + " : " + user[i].timeFromMeridian %></p>
+            </div>
+            <div>
+                <i class="booking-details-icon fa fa-hourglass-half"></i>
+                <p class="booking-details-text">1 hour</p>
+            </div>
+            <div>
+                <i class="booking-details-icon  fa fa-map-marker"></i>
+                <p class="booking-details-text">Zoom</p>
+            </div>
+            <div>
+                <i class="booking-details-icon  fa fa-envelope"></i>
+                <p class="booking-details-text"><%= email  %></p> 
+            </div>
+            <a href="/bookAppointment"><input type="button" value="RESHEDULE" class="reshedule_btn"></a>
+           
+        </div>
+        <%    break;  %>
+        <%    }  %>
+
+<% }              %>
+
+     
+</section>
+
+<%- include("partials/footer") %>

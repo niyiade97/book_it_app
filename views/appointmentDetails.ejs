@@ -1,42 +1,33 @@
 <%- include("partials/header") %>
 <section class="event-body">
-<div class="booking-details" >
+    <div class="booking-details" >
     <div class="details-container">
-        <div>
-            <h1>Appointment with</h1>
-            <p class="details-header-name">Ade</p>
-            <hr>
-        </div>
-        <div>
-            <h3><%= title %></h3>
-        </div>
-        <div>
-            <i class="booking-details-icon  fa fa-calendar"></i>
-            <p class="booking-details-text"><%= month %> <%= day %></p>
-        </div>
-        <div>
-            <i class="booking-details-icon fa fa-clock"></i>
-            <p class="booking-details-text"><%= timefrom %></p>
-        </div>
-        <div>
-            <i class="booking-details-icon fa fa-clock"></i>
-            <p class="booking-details-text"><%= timeto %></p>
-        </div>
-        <div>
-            <i class="booking-details-icon fa fa-hourglass-half"></i>
-            <p class="booking-details-text">1 hour</p>
-        </div>
-        <div>
-            <i class="booking-details-icon  fa fa-map-marker"></i>
-            <p class="booking-details-text">Zoom</p>
-        </div>
-        <div>
-            <i class="booking-details-icon  fa fa-phone"></i>
-            <p class="booking-details-text"> +234 802 731 8919</p>
-        </div>
-        <a href="#book"><input type="button" value="RESHEDULE" class="reshedule_btn"></a>
-        
+        <h1>Appointments</h1>
+        <hr>
     </div>
-</div>
+        <%   userRecord.appointments.forEach(function(user){    %>
+           
+            <div class="appointmentBox-wrapper">
+                <div class="details-day-and-date">
+                    <p><%=  user.day %></p>
+                    <p><%=  user.date %></p>
+                </div>
+                <a href="fullDetails/<%= user.username %>/<%= user._id %>">
+                    <div class="appointmentBox" >
+                        <div>
+                            <i class="fas fa-hand-pointer"></i><p><%= user.title %></p>
+                        </div>
+                        <div>
+                        <p ><%=  user.timeFromHour + " : " + user.timeFromMin + " : " + user.timeFromMeridian %></p>
+                        </div>
+                        
+                    </div>
+                </a>
+            </div>   
+           
+            
+        <%  })   %>
+    </div>
+
 </section>
 <%- include("partials/footer") %>

@@ -11,7 +11,24 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const bcrypt = require("bcrypt");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require("mongoose-findorcreate");
+const path = require("path");
+const multer = require("multer");
+const { compileFunction } = require('vm');
+
 // var encrypt = require("mongoose-encryption");
+//set storage engine
+
+const storage = multer.diskStorage({
+  destination : "./public/uploads",
+  filename : function(req , file , cb){
+    cb(null , file.fieldname + "-" + Date.now() + path.extname(file.originalname));
+  }
+});
+
+//init upload
+const upload = multer({
+  storage : storage
+}).single("myImage");
 
 app.set("view engine" , "ejs");
 app.use(bodyParser.urlencoded({extended : true}));
@@ -26,21 +43,39 @@ app.use(passport.session());
 mongoose.connect("mongodb://localhost:27017/bookItUserDB" , {useNewUrlParser : true , useUnifiedTopology : true});
 
 mongoose.set("useCreateIndex" , true);
+
+
+const appointmentDetailsSchema = new mongoose.Schema({
+  username : String,
+  year : String,
+  month : String,
+  day : String,
+  date : String,
+  title : String,
+  timeFromHour :  String,
+  timeToHour : String,
+  timeFromMin :  String,
+  timeToMin : String,
+  timeFromMeridian : String,
+  timeToMeridian : String
+});
+
 const userSchema = new mongoose.Schema({
     firstName : String,
     lastName : String,
     email : String,
     username: String,
-    passWord : String
+    passWord : String,
+    appointments : [appointmentDetailsSchema]
 });
-
-
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
 
-const User = mongoose.model("User" , userSchema); 
+const User = mongoose.model("User" , userSchema);
+
+const appointmentDetails = mongoose.model("appointmentDetails" , appointmentDetailsSchema);
 
 passport.use(User.createStrategy());
 // passport.serializeUser(User.serializeUser());
@@ -72,7 +107,7 @@ passport.use(new GoogleStrategy({
 
 app.get("/", function(req, res){
     res.render("register", {errorMessage : ""});
-})
+});
 
 app.get("/auth/google" , function(req , res){
   console.log("done")
@@ -104,8 +139,20 @@ app.get("/bookAppointment", function(req, res){
     
 })
 app.get("/appointmentDetails", function(req, res){
-    res.render("appointmentDetails" , {timefrom : "",timeto : ""});
+    res.render("appointmentDetails" , {userRecord : req.user});
 })
+
+// app.post("/appointmentDetails", function(req, res){
+//   const appointmentId =  req.body.appointment_id;
+//   appointmentDetails.findOne({_id : appointmentId} ,function(err, foundList){
+//     console.log(foundList)
+//       res.render("fullDetails" ,{
+//         user : foundList
+//         });
+// })
+
+// })
+
 
 app.get("/register", function(req, res){
     res.render("register", {errorMessage : ""});
@@ -116,16 +163,53 @@ app.get("/login", function(req, res){
 })
 
 app.post("/login", function(req,res){
-    const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
    
-    User.findOne({email : email} , function(err , user){
+    User.findOne({email : username} , function(err , user){
         if(err){
             console.log(err)
         }
         else{
             if(!user){
-                res.render("login" , {errorMessage: "User does not exist"});
+              User.findOne({username : username} , function(err , user){
+                if(err){
+                  console.log(err)
+              }
+              else{
+                if(!user){
+                  res.render("login" , {errorMessage: "User does not exist"});
+                }
+                else{
+                  bcrypt.compare(password , user.passWord , function(err , result){
+                    if(err){
+                      console.log(err)
+                    }
+                    else{
+                      if(!result){
+                        res.render("login" , {errorMessage: "wrong password"})
+                      }
+                      else{
+                        req.login(user, function(err){
+                          if(err){
+                            console.log(err)
+                          }
+                          else{
+                            res.redirect("/dashboard");
+                          }
+                        })
+                        // passport.authenticate("local")(req, res, function(){
+                          
+                          
+                        // });
+                      }
+                    }
+                  })
+
+                }
+              }
+              })
+                
             }
             else{
                 bcrypt.compare(password , user.passWord , function(err , result){
@@ -165,7 +249,7 @@ app.post("/register", function(req,res){
     const username = req.body.username;
     const password = req.body.password;
 
-    User.findOne({usenamr : username}, function(err, foundUser){
+    User.findOne({email : email}, function(err, foundUser){
         if(err){
             console.log(err);
         }
@@ -206,13 +290,40 @@ app.post("/register", function(req,res){
 app.get("/logout" , function(req,res){
     req.logOut();
     res.redirect("/login");
+});
+
+app.get("/fullDetails/:username/:detailId", function(req , res){
+  const username = req.params.username;
+  const appointmentId = req.params.detailId;
+  User.findOne({username : username} , function(err , foundUser){
+    if(err){
+      console.log(err)
+    }
+    else{
+      res.render("fullDetails" ,{
+        user : foundUser.appointments,
+        id : appointmentId,
+        email : foundUser.email
+        });
+    }
+  });
+  });
+
+app.post("/profile" , function(req , res){
+  res.render("profile");
 })
- 
 app.post("/bookAppointment" , function(req , res){
 const title = req.body.title;
 const timeFrom = req.body.timeFrom;
 const timeTo = req.body.timeTo;
+const year = req.body.year;
+const day = req.body.day;
+const date = req.body.date;
+const month = req.body.month;
+const username = req.user.username;
+
 function getTime(time){
+  var timeArray = [];
     var timeSplit = time.split(':'),
     hours,
     minutes,
@@ -229,18 +340,64 @@ function getTime(time){
     }
   } else {
     meridian = 'PM';
-  }
-  var splittedTime = hours + " : " + minutes + " : " + meridian;
-  return splittedTime;
-}
+ 
 
-if(title === ""){
+}
+timeArray[0] = hours;
+timeArray[1] = minutes;
+timeArray[2] = meridian;
+return timeArray;
+}
+const timeFromHour = getTime(timeFrom)[0];
+const timeFromMinute = getTime(timeFrom)[1];
+const timeFromMeridian = getTime(timeFrom)[2];
+
+const timeToHour = getTime(timeTo)[0];
+const timeToMinute = getTime(timeTo)[1];
+const timeToMeridian = getTime(timeTo)[2];
+
+const timefrom = getTime(timeFrom)[0] + " : " + getTime(timeFrom)[1] + " : " + getTime(timeFrom)[2];
+
+const timeto = getTime(timeTo)[0] + " : " + getTime(timeTo)[1] + " : " + getTime(timeTo)[2];
+
+
+
+
+if(title === "" ){
     res.render("bookAppointment" ,{ errorMessage : "Title field can't be empty"})
 }
-else{
-  res.render("appointmentDetails",{month : "october" , day : 12 , title : title , timefrom :getTime(timeFrom) , timeto :getTime(timeTo)});
+else if((getTime(timeTo)[0] === undefined || getTime(timeTo)[1] === undefined) || (getTime(timeFrom)[0] === undefined && getTime(timeFrom)[1] === undefined)){
+  res.render("bookAppointment" ,{ errorMessage : "Time field can't be empty"})
 }
-    
+else{
+  
+  User.findOne({username : username} , function(err , user){
+    if(err){
+      console.log(err)
+    }
+    else{
+      const Details = new appointmentDetails({
+        username : username,
+        year : year,
+        month : month,
+        day : day,
+        date : date,
+        title : title,
+        timeFromHour : timeFromHour,
+        timeToHour : timeToHour,
+        timeFromMin : timeFromMinute,
+        timeToMin : timeToMinute,
+        timeFromMeridian : timeFromMeridian,
+        timeToMeridian : timeToMeridian
+      });
+      user.appointments.push(Details);
+      user.save();
+      Details.save();
+      res.render("appointmentDetails",{userRecord : user});
+    }
+  })
+      
+}
 
 
 });

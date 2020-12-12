@@ -21,13 +21,16 @@
         <p class="day"></p>
         <p class="month"></p>
         <p class="year"></p>
-        <input type="hidden">
-        <input type="hidden">
-        <input type="hidden">
-        <input type="hidden">
+       <div style="display: none;">
+        <input name="date" type="text" class="date-holder">
+        <input type="text"name="day" class="day-holder">
+        <input name="month" type="text" class="month-holder">
+        <input name="year" type="text" class="year-holder">
+       </div>
+       
     </div>
     <div class="title">
-        <p class="errorMessage"><%= errorMessage %></p>
+        <p id="errorMessage"><%= errorMessage %></p>
         <input type="text"placeholder="Add Title" name="title" ><br>
     </div>
     <div class="timeAndSubmit">

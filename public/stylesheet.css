@@ -84,6 +84,7 @@ h2.header-text{
     z-index: -1;
     margin-top: 66.8px;
     margin-left:20%;
+    margin-bottom: 40px;
     width:80%;
     background-color: #eeeeee;
     display: inline-block;
@@ -186,7 +187,7 @@ h2.header-text{
     width:90%;
     height:60px;
     margin:0 auto;
-    border-spacing: 0.3px;
+    border-spacing: 0.1px;
 }
 .errorMessage{
     margin-bottom: 20px;
@@ -273,7 +274,7 @@ display: inline;
     color: white;
     width:100px;
     height: 40px;
-    margin:40px 60px;
+    margin:40px 0px;
     border-radius: 5px;
 }
 .submitBtn:hover{
@@ -282,11 +283,12 @@ display: inline;
     font-weight: bold;
 }
 .timeAndSubmit{
-    margin:20px 45px 20px 45px;
+    margin:20px 0px 20px 35px;
     padding:10px 10px 0px 10px;
-    width: 100%;
-    
 }
+.timeAndSubmit input{
+width:80px;
+} 
 .timeAndSubmit p ,.timeInput{
     height:30px;
     display:inline;
@@ -301,9 +303,9 @@ display: inline;
     width:100%;
 }
 .details-container{
+    margin:30px 30px 30px 60px;
+    margin-right: 0px;
     border:1px solid #eeeeee;
-    width:100%;
-    margin-top:0px;
     margin-bottom: 30px;
     color: #16213e;
     font-family: Arial, Helvetica, sans-serif;
@@ -329,9 +331,7 @@ margin-left: 5px;
 border-top: 1px solid #16213e;
 
 }
-.details-container div{
-    margin:20px 30px 30px 60px;
-}
+
 .reshedule_btn{
     background-color: #16213e; 
     color: white;
@@ -368,6 +368,7 @@ border-top: 1px solid #16213e;
 }
 .bottom-nav-container a{
     color:#16213e;
+    text-decoration: none;
 }
 
 .bottom-nav-text{
@@ -499,7 +500,7 @@ text-align: center;
     min-width: 50px;
     text-align: center;
   }
-  .inner-input-container input:focus {
+.inner-input-container input:focus {
     border: 1px solid #16213e;
   }
   /* login */
@@ -518,6 +519,11 @@ text-align: center;
     border-bottom-left-radius: 15px;
     
 }
+#errorMessage{
+    color:red;
+    padding:10px;
+    display: block;
+}
 .error-message{
     color:red;
     padding:10px;
@@ -525,8 +531,48 @@ text-align: center;
 .register-and-forgotPassword-container{
     display: none;
 }
-/* resize screen */
+.appointmentBox-wrapper{
+    margin-bottom:25px;
+    margin-left: 20px;
+    display:flex;
 
+}
+.appointmentBox p{
+    display: inline-block;
+    margin:3px 3px 3px 5px;
+
+}
+.appointmentBox{
+    border: 2px solid  #16213e;
+    width: 250px;
+    border-radius: 20px;
+    background-color:white ;
+    padding:10px;
+    color:  #16213e;
+    margin-left: 10px;
+}
+.appointmentBox:hover{
+    background-color:  #16213e;
+    color:white;
+}
+.details-day-and-date{
+    width: 50px;
+    padding:10px;
+    color: #16213e;
+    text-align: center;
+}
+
+
+.details-day-and-date p{
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+/* resize screen */
+@media screen and (max-width: 457px) {
+    .inner-input-container input{
+        width:170px;
+    }
+}
 @media screen and (max-width: 457px) {
     .event{
         width: 150px;
@@ -541,6 +587,23 @@ text-align: center;
         padding-left:5%;
     }
     
+}
+
+/* profile */
+.profile{
+    margin-top: 84.8px;
+    display: inline-block;
+    width:100%;
+}
+.profile-header{
+    margin-left:30px;
+    color:#16213e;
+}
+.profile-header h1{
+    margin-bottom: 0px;
+}
+.profile-header hr{
+    border-top:1px solid #16213e;
 }
 @media screen and (max-width:660px) {
     .event-body{
@@ -579,27 +642,27 @@ text-align: center;
   
   @media screen and (max-width: 822px) {
    
-    .event-body{  
-        display:inline-block;
-        margin-top: 84.8px;
-        /* margin: 67px 0px 0px 0px; */
-    }
-    .time-details{
-       display: block;
-       width:100%;
-    }
-   
-    .main-body-header-text{
-        padding-left:10%;
-    }
-    .appointment-booking{
-        border-bottom:1px solid grey;
-        width: 100%;
-        border-right: 0px;
-        border-bottom: 1px solid black;
-    }
-    .calendar-container{
-        width:100%;
+.event-body{  
+    display:inline-block;
+    margin-top: 84.8px;
+    /* margin: 67px 0px 0px 0px; */
+}
+.time-details{
+    display: block;
+    width:100%;
+}
+
+.main-body-header-text{
+    padding-left:10%;
+}
+.appointment-booking{
+    border-bottom:1px solid grey;
+    width: 100%;
+    border-right: 0px;
+    border-bottom: 1px solid black;
+}
+.calendar-container{
+    width:100%;
 }
 .submitBtn{
     margin-left: 0px;
@@ -625,5 +688,18 @@ text-align: center;
     margin-left: 5px;
    
 }
-  }
+.register-wrapper{
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    width: 100%;
 
+}
+.register-container{
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    width: 100%;
+}
+.inner-input-container input{
+    width:200px;
+}
+  }
