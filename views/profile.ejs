@@ -3,15 +3,39 @@
     <div class="profile-header"> 
         <h1>Profile</h1>
         <hr>
-    </div class="profile-body">
-<form action="/profile" method="POST" enctype="multipart/form-data">
-    <input type="file" name="image" >
-    <input type="submit" value="upload" >
-</form>
-   
-    <div>
-
     </div>
+    <div class="profile-img-body">
+        <div class="profile-img-container">
+            <img src="<%= typeof file != 'undefined' ? file : 'profileImage.png'  %>" class="profile-img">
+        </div>
+        
+        <form action="/profile" method="POST" enctype="multipart/form-data">
+            
+            <input type="file" name="image" class="select-img">
+            <input type="submit" value="Done" class="select-img">
+        </form>
+    </div>
+    <div class="profile-details">
+        <div>
+            <p>Full Name</p>
+            <h4><%= user.firstName + " " + user.lastName %></h4>
+        </div>
+        <div>
+            <p>Display Name</p>
+            <h4><%= user.username %></h4>
+        </div>
+        <div>
+            <p>Email</p>
+            <h4><%= user.email %></h4>
+        </div>
+    </div>
+    <div class="icon-container">
+        <a href=""><i class=" fa fa-facebook"></i></a>
+        <a href=""><i class=" fa fa-google"></i></a>
+        <a href=""><i class=" fa fa-twitter"></i></a>
+    </div>
+    
+    
 </section>
 
 

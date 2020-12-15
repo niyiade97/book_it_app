@@ -1,14 +1,15 @@
 
 
 /* Header */
-
+html{
+    font-family: "Montserrat", sans-serif;
+}
 * {
     box-sizing: border-box;
 }
 
 body{
-    font-family:  sans-serif,serif;
-    background-color: #eeeeee; 
+    background-color: #eee; 
     margin: 0px;
 }
 header{
@@ -18,12 +19,16 @@ header{
     padding:15px;
     margin-top: 0px;
     position: fixed;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
 h2.header-text{
     display: inline-block;
     margin-top:8px;
     margin-bottom: 0px;
     font-size:25px;
+}
+h2.dynamic-header-text{
+    display: none;
 }
 .header-container i{
     float: right;
@@ -42,7 +47,7 @@ h2.header-text{
     position: fixed;
     display: inline-block;
     background-color:  #16213e;
-    color:white;
+    color:#fff;
     font-size:12px;
     width:20%;
     height: 100vh;
@@ -567,6 +572,73 @@ text-align: center;
     margin-top: 0px;
     margin-bottom: 5px;
 }
+
+.profile-img-body form{
+    padding-top:20px;
+    padding-left:20px;
+    text-align: center;
+}
+.profile-img-container{
+    width:120px;
+    height:120px;
+    margin:auto;
+}
+.profile{
+    margin-top: 84.8px;
+    display: inline-block;
+    width:80%;
+    margin-left: 20%;
+}
+.profile-header{
+    margin-left:30px;
+    color:#16213e;
+}
+.profile-header h1{
+    margin-bottom: 0px;
+}
+.profile-header hr{
+    border-top:1px solid #16213e;
+}
+.profile-img{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+
+
+}
+.profile-details{
+    margin-top:20px;
+    width:100%;
+}
+.profile-details p{
+    color: #16213e ;
+}
+.profile-details div{
+    margin: 20px 0px;
+    background-color: white;
+    padding: 3px 20px;
+}
+.icon-container{
+    text-align: center;
+    margin:40px auto;
+    padding: 30px;
+
+}
+.icon-container i{
+    background-color: #f4f4f2; 
+    color:#16213e ;
+    padding: 20px;
+    border: 0px;
+}
+.select-img{
+    width:90px;
+    background-color: #16213e ;
+   color:white;
+}
+.select-img:hover{
+    background-color: white;
+    color: #16213e ;
+}
 /* resize screen */
 @media screen and (max-width: 457px) {
     .inner-input-container input{
@@ -586,25 +658,10 @@ text-align: center;
     .main-body-header-text{
         padding-left:5%;
     }
-    
 }
 
 /* profile */
-.profile{
-    margin-top: 84.8px;
-    display: inline-block;
-    width:100%;
-}
-.profile-header{
-    margin-left:30px;
-    color:#16213e;
-}
-.profile-header h1{
-    margin-bottom: 0px;
-}
-.profile-header hr{
-    border-top:1px solid #16213e;
-}
+
 @media screen and (max-width:660px) {
     .event-body{
         display:block;
@@ -636,7 +693,26 @@ text-align: center;
     .time-details{
        display:block;
     }
+    .profile{
+        margin-left: 0%;
+        width:100%;
+    }
+    h2.header-text{
+        display:none;
+    }
+    h2.dynamic-header-text{
+        display: inline;
+    }
     
+.details-container{
+    display: none;
+}
+.profile-header{
+    display: none;
+}
+#myForm{
+    margin-top:40px;
+}
 }
 
   
@@ -702,4 +778,5 @@ text-align: center;
 .inner-input-container input{
     width:200px;
 }
+
   }

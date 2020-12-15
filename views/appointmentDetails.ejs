@@ -5,28 +5,43 @@
         <h1>Appointments</h1>
         <hr>
     </div>
-        <%   userRecord.appointments.forEach(function(user){    %>
+        <form id="myForm" action="/appointmentDetails" method="post">
+            <div style="display: none;">
+                <input type="text" name="username" value="<%= userRecord.username %>">
+            </div>
+            <% if(Object.keys(userRecord).length !== 0){   %>
+                <%   userRecord.appointments.forEach(function(user){    %>
            
-            <div class="appointmentBox-wrapper">
-                <div class="details-day-and-date">
-                    <p><%=  user.day %></p>
-                    <p><%=  user.date %></p>
-                </div>
-                <a href="fullDetails/<%= user.username %>/<%= user._id %>">
-                    <div class="appointmentBox" >
-                        <div>
-                            <i class="fas fa-hand-pointer"></i><p><%= user.title %></p>
+                    <div class="appointmentBox-wrapper">
+                        <div class="details-day-and-date">
+                            <p><%=  user.day %></p>
+                            <p><%=  user.date %></p>
                         </div>
-                        <div>
-                        <p ><%=  user.timeFromHour + " : " + user.timeFromMin + " : " + user.timeFromMeridian %></p>
+                        <div style="display: none;">
+                            <input type="text" name="id" value="<%= user._id %>">
                         </div>
+                            
+                            <div class="appointmentBox" onclick="document.forms['myForm'].submit()">
+                                <div>
+                                    <i class="fas fa-hand-pointer"></i><p><%= user.title %></p>
+                                </div>
+                                <div>
+                                <p ><%=  user.timeFromHour + " : " + user.timeFromMin + " : " + user.timeFromMeridian %></p>
+                                </div>
+                                
+                            </div>
                         
-                    </div>
-                </a>
-            </div>   
-           
-            
-        <%  })   %>
+                        
+                           
+                        
+                    </div>   
+                   
+                    
+                <%  })   %>
+        
+      <%      }      %>
+       
+        </form>
     </div>
 
 </section>

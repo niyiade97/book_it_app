@@ -126,9 +126,6 @@ dateValue.click(function(){
 });
    
 }
-  
-
-
 
 
 //calendar left navigation icon
@@ -207,132 +204,15 @@ function Onclick_Right_Nav(current_month,current_year){
 //     }
 // }
 
-var dashboardbtn = document.querySelector(".nav-item-container");
-dashboardbtn.addEventListener("click",scroll_Top);
-
-function scroll_Top(){
-    window.scrollTo(0,0);
-
-}
-
-// time-details resize
-
-//dashboard function for desktop view
-var dashboard_side_nav = document.querySelector(".dashboard");
-dashboard_side_nav.addEventListener("click",show_home_page);
 
 
 
-// //bottom home button on click function for mobile view
-
-// var bottom_home_icon = document.querySelector(".bottom-nav-home");
-// bottom_home_icon.addEventListener("click",show_home_page);
-
-// function show_home_page(){
-//    document.querySelector(".main-body-header-text").style.display = "block";
-//   document.querySelector(".booking-details").style.display = "none";
-//   document.querySelector(".grid-wrapper").style.display = "inline-block";
-//   document.querySelector(".time-details").style.display = "none";
-//   document.querySelector(".appointment-booking").style.display = "none";
-//    window.scrollTo(0,0);
 
 
-//    window.addEventListener("resize",function(){
-//     document.querySelector(".time-details").style.display = "none";
-    
-//   });
-
-
-
-// }
-
-
- //book appointment grid on click function
-
-
-//  var  reshedule_grid = document.querySelector(".reshedule_btn");
-//  reshedule_grid.addEventListener("click",show_booking_page);
-
-//  var book_appointment_side_nav = document.querySelector(".bookAppointment");
-//  book_appointment_side_nav.addEventListener("click",show_booking_page);
-
-
-// var book_appointment_grid = document.querySelector(".grid1");
-// book_appointment_grid.addEventListener("click",show_booking_page);
-
-// var book_appointment_bottom_nav = document.querySelector(".bottom-nav-newAppointment");
-// book_appointment_bottom_nav.addEventListener("click",show_booking_page);
-
-// function show_booking_page(){
-//   document.querySelector(".booking-details").style.display = "none";
-//   document.querySelector(".grid-wrapper").style.display = "none";
-//   document.querySelector(".main-body-header-text").style.display = "none";
-//   document.querySelector(".appointment-booking").style.display = "inline-block";
-  
-//   window.scrollTo(0,0);
   
   
 
-//   if(window.innerWidth <= 822){
-//     document.querySelector(".time-details").style.display = "inline-block";
-//     document.querySelector(".appointment-time").style.display = "none";
-//     document.querySelector(".vertical-container").style.display = "none";
-//   }
-//   else{
-// //     document.querySelector(".appointment-time").style.display = "table-cell";
-// //     document.querySelector(".time-details").style.display = "none";
-// //     document.querySelector(".vertical-container").style.display = "inline-block";
-// //   }
-// //   window.addEventListener("resize",function(){
-// //     if(window.innerWidth <= 822){
-// //       document.querySelector(".time-details").style.display = "inline-block";
-// //       document.querySelector(".appointment-time").style.display = "none";
-// //       document.querySelector(".vertical-container").style.display = "none";
-// //     }
-// //     else{
-// //       document.querySelector(".appointment-time").style.display = "table-cell";
-// //       document.querySelector(".time-details").style.display = "none";
-// //       document.querySelector(".vertical-container").style.display = "inline-block";
-// //     }
-//   });
-  
-// }
 
-
-//appointmnent details function
-
-// var book_appointment_side_nav = document.querySelector(".appointmentDetails");
-//  book_appointment_side_nav.addEventListener("click",show_booking_details);
-
-//  var reshedule_appointment_grid = document.querySelector(".grid6");
-//  reshedule_appointment_grid.addEventListener("click",show_booking_details);
-
-
-// var book_appointment_grid = document.querySelector(".grid2");
-// book_appointment_grid.addEventListener("click",show_booking_details);
-
-// // var book_appointment_bottom_nav = document.querySelector(".bottom-nav-details");
-// book_appointment_bottom_nav.addEventListener("click",show_booking_details);
-
-
-
-// function show_booking_details(){
-//   document.querySelector(".grid-wrapper").style.display = "none";
-//   document.querySelector(".main-body-header-text").style.display = "none";
-//   document.querySelector(".appointment-booking").style.display = "none";
-//   document.querySelector(".booking-details").style.display = "inline-block";
-//   document.querySelector(".time-details").style.display = "none";
-  
-//   window.addEventListener("resize",function(){
-//     document.querySelector(".time-details").style.display = "none";
-    
-//   });
-
-//   window.scrollTo(0,0);
- 
-// }
-
-//generate calendar on clicking on any date
 
 
 

@@ -27,8 +27,25 @@ const storage = multer.diskStorage({
 
 //init upload
 const upload = multer({
-  storage : storage
-}).single("myImage");
+  storage : storage,
+  limits : {fileSize : 1000000},
+  fileFilter : function(req, file, cb){
+    checkFileType(file, cb);
+  }
+}).single("image");
+
+function checkFileType(file , cb){
+  const filetypes = /jpeg|jpg|png|gif/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
+
+  if(mimetype && extname){
+    return cb(null , true);
+  }
+  else{
+    cb('Error' , 'Images only!');
+  }
+}
 
 app.set("view engine" , "ejs");
 app.use(bodyParser.urlencoded({extended : true}));
@@ -122,7 +139,7 @@ app.get("/auth/google/BOOKIT",
   });
 app.get("/dashboard", function(req, res){
     if(req.isAuthenticated()){
-        res.render("dashboard" , { username : req.user.username});
+        res.render("dashboard" , { username : req.user.username, headerText : "BOOKIT"});
     }
     else{
         res.redirect("/login");
@@ -131,7 +148,7 @@ app.get("/dashboard", function(req, res){
 
 app.get("/bookAppointment", function(req, res){
     if(req.isAuthenticated()){
-        res.render("bookAppointment",{errorMessage : ""});
+        res.render("bookAppointment",{errorMessage : "", headerText : "Book Appointment"});
     }
     else{
         res.redirect("/login");
@@ -139,21 +156,40 @@ app.get("/bookAppointment", function(req, res){
     
 })
 app.get("/appointmentDetails", function(req, res){
-    res.render("appointmentDetails" , {userRecord : req.user});
+    res.render("appointmentDetails" , {userRecord : req.user, headerText : "Appointment Details"});
 })
 
-// app.post("/appointmentDetails", function(req, res){
-//   const appointmentId =  req.body.appointment_id;
-//   appointmentDetails.findOne({_id : appointmentId} ,function(err, foundList){
-//     console.log(foundList)
-//       res.render("fullDetails" ,{
-//         user : foundList
-//         });
-// })
+app.post("/appointmentDetails", function(req, res){
+  const appointmentId =  req.body.id;
+  const username =  req.body.username;
+  User.findOne({username : username} ,function(err, foundUser){
+    if(err){
+      console.log(err)
+    }
+    else{
+      if(!foundUser){
+        console("user doesnt exist")
+      }
+      else{
+        res.render("fullDetails" ,{
+          user : foundUser,
+          id : appointmentId,
+          headerText : "Details"
+          });
+      }
+    }
+  })
 
-// })
+})
 
+app.get("/fullDetails", function(req , res){
+  res.render("fullDetails" ,{
+    user : req.user,
+    id : "",
+    headerText : "Details"
+    });
 
+});
 app.get("/register", function(req, res){
     res.render("register", {errorMessage : ""});
 })
@@ -292,25 +328,39 @@ app.get("/logout" , function(req,res){
     res.redirect("/login");
 });
 
-app.get("/fullDetails/:username/:detailId", function(req , res){
-  const username = req.params.username;
-  const appointmentId = req.params.detailId;
-  User.findOne({username : username} , function(err , foundUser){
+
+app.get("/profile" , function(req , res){
+    const user = req.user;
+    res.render("profile",{
+      headerText : "Profile",
+      file : req.file,
+      user : user
+    });
+  })
+app.post("/profile" , (req , res)=>{
+  const user = req.user;
+  upload(req, res, (err)=>{
     if(err){
-      console.log(err)
+      console.log(err);
+    }
+    else if(req.file === undefined){
+      res.render("profile" , {
+        file :"profileImage.png",
+        user : user,
+        headerText : "Profile",
+      });
     }
     else{
-      res.render("fullDetails" ,{
-        user : foundUser.appointments,
-        id : appointmentId,
-        email : foundUser.email
-        });
+      res.render("profile" , {
+        file : "uploads/"+req.file.filename,
+        user : user,
+        headerText : "Profile",
+      });
+  
     }
-  });
-  });
 
-app.post("/profile" , function(req , res){
-  res.render("profile");
+    
+  })
 })
 app.post("/bookAppointment" , function(req , res){
 const title = req.body.title;
@@ -364,16 +414,16 @@ const timeto = getTime(timeTo)[0] + " : " + getTime(timeTo)[1] + " : " + getTime
 
 
 if(title === "" ){
-    res.render("bookAppointment" ,{ errorMessage : "Title field can't be empty"})
+    res.render("bookAppointment" ,{ errorMessage : "Title field can't be empty",headerText : "Book Appointment"})
 }
 else if((getTime(timeTo)[0] === undefined || getTime(timeTo)[1] === undefined) || (getTime(timeFrom)[0] === undefined && getTime(timeFrom)[1] === undefined)){
-  res.render("bookAppointment" ,{ errorMessage : "Time field can't be empty"})
+  res.render("bookAppointment" ,{ errorMessage : "Time field can't be empty",headerText : "Book Appointment"})
 }
 else{
   
   User.findOne({username : username} , function(err , user){
     if(err){
-      console.log(err)
+      console.log(err);
     }
     else{
       const Details = new appointmentDetails({
@@ -393,7 +443,7 @@ else{
       user.appointments.push(Details);
       user.save();
       Details.save();
-      res.render("appointmentDetails",{userRecord : user});
+      res.render("appointmentDetails",{userRecord : user ,headerText : "Appointment Details"});
     }
   })
       
