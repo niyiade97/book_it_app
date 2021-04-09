@@ -6,12 +6,12 @@
         <hr>
     </div>
         <form id="myForm" action="/appointmentDetails" method="post">
-            <div style="display: none;">
-                <input type="text" name="username" value="<%= userRecord.username %>">
-            </div>
-            <% if(Object.keys(userRecord).length !== 0){   %>
-                <%   userRecord.appointments.forEach(function(user){    %>
            
+            <% if(Object.keys(userRecord.appointments).length !== 0){   %>
+                <%   userRecord.appointments.forEach(function(user){    %>
+                    <div style="display: none;">
+                        <input type="text" name="username" value="<%= userRecord.username %>">
+                    </div>
                     <div class="appointmentBox-wrapper">
                         <div class="details-day-and-date">
                             <p><%=  user.day %></p>

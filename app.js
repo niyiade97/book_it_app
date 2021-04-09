@@ -157,7 +157,7 @@ app.get("/bookAppointment", function(req, res){
 })
 app.get("/appointmentDetails", function(req, res){
     res.render("appointmentDetails" , {userRecord : req.user, headerText : "Appointment Details"});
-})
+});
 
 app.post("/appointmentDetails", function(req, res){
   const appointmentId =  req.body.id;
